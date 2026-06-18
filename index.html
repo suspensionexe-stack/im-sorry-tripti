@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I'm Sorry, Tripti</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #121212;
+            --gray: #888888;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 40px;
+            z-index: 10;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #333333;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .highlight {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .buttons {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            align-items: center;
+            position: relative;
+            min-height: 50px;
+        }
+
+        button {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        #yes-btn {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            border: 2px solid var(--text-color);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        #yes-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+        }
+
+        #no-btn {
+            background-color: transparent;
+            color: var(--gray);
+            border: 1px solid #dddddd;
+            position: relative; /* Changed to absolute via JS */
+        }
+
+        /* Success Screen */
+        #success-screen {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .heart {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.1); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.1); }
+            70% { transform: scale(1); }
+        }
+
+        /* Floating background shapes for a premium feel */
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.03);
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-shape" style="width: 300px; height: 300px; top: -100px; left: -100px;"></div>
+    <div class="bg-shape" style="width: 500px; height: 500px; bottom: -200px; right: -150px;"></div>
+
+    <div class="container" id="main-screen">
+        <h1>I am so sorry, Tripti.</h1>
+        <p>I messed up today. The work stress got the better of me, and I unfairly took it out on you. <span class="highlight">That is absolutely no excuse.</span></p>
+        <p>You know that isn't who I am, and it broke my heart the moment it happened. You deserve nothing but kindness and respect.</p>
+        <p>I promise to do better. Can you find it in your heart to forgive me?</p>
+        
+        <div class="buttons">
+            <button id="yes-btn">Yes, I forgive you 🖤</button>
+            <button id="no-btn">No</button>
+        </div>
+    </div>
+
+    <div class="container" id="success-screen">
+        <div class="heart">🖤</div>
+        <h1>Thank you.</h1>
+        <p>Your forgiveness means the world to me. I promise to make this up to you.</p>
+        <p><em>Let me take you out to make you smile again.</em></p>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('no-btn');
+        const yesBtn = document.getElementById('yes-btn');
+        const mainScreen = document.getElementById('main-screen');
+        const successScreen = document.getElementById('success-screen');
+
+        // Function to make the "No" button run away
+        const dodgeCursor = () => {
+            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+            
+            // Randomize position
+            const randomX = Math.max(20, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(20, Math.floor(Math.random() * maxY));
+
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            noBtn.style.transition = 'all 0.2s ease-out';
+        };
+
+        // Trigger on hover (desktop) and touch (mobile)
+        noBtn.addEventListener('mouseover', dodgeCursor);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent accidental clicks while dodging
+            dodgeCursor();
+        });
+
+        // Function to show the success screen
+        yesBtn.addEventListener('click', () => {
+            mainScreen.style.display = 'none';
+            successScreen.style.display = 'block';
+            
+            // Trigger fade in
+            setTimeout(() => {
+                successScreen.style.opacity = '1';
+            }, 50);
+            
+            // Hide the rogue 'No' button if it ran away
+            noBtn.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
